@@ -22,6 +22,7 @@ setup(
     version='0.2',
     author='Ronny Pfannschmidt',
     author_email='Ronny.Pfannschmidt@gmx.de',
+    url='http://bitbucket.org/RonnyPfannschmidt/pytest-codecheckers/',
     packages=[
         'codecheckers',
         ],
