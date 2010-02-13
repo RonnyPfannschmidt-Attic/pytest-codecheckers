@@ -9,9 +9,11 @@ class PyCodeCheckItem(py.test.collect.Item):
         self._ep = ep
 
     def runtest(self):
-        __tracebackhide__ = True
         mod = self._ep.load()
         mod.check_file(self.fspath)
+
+    def reportinfo(self):
+        return (self.fspath, -1, "codecheck")
 
 
 
