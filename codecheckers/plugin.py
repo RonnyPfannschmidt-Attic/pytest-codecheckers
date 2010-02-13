@@ -19,7 +19,7 @@ class PyCodeCheckItem(py.test.collect.Item):
         return self.out
 
     def reportinfo(self):
-        return (self.fspath, -1, "codecheck")
+        return (self.fspath, -1, "codecheck %s" % self._ep.name)
 
 
 

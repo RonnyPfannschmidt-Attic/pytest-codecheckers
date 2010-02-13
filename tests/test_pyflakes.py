@@ -20,5 +20,5 @@ def test_reportinfo_verbose(testdir):
     f.write(f.read() + '\n')
     out = testdir.runpytest('-v')
     out.stdout.fnmatch_lines([
-        '*test_reportinfo_verbose.py: codecheck PASS',
+        '*test_reportinfo_verbose.py: codecheck pyflakes PASS',
         ])
