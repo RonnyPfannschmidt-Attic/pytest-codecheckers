@@ -20,6 +20,7 @@ setup(
             ],
         },
     install_requires=[
+        'py>=1.2.0',
         'pyflakes>=0.4',
         'pep8',
         ],
