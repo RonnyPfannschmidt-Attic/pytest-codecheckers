@@ -18,4 +18,4 @@ def check_file(path):
     checker = PyTestChecker(str(path))
     error_count = checker.check_all()
     ignored = checker.ignored_errors
-    assert error_count <= ignored
+    return max(error_count - ignored, 0)

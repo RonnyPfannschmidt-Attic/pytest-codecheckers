@@ -10,5 +10,5 @@ def assignment_monkeypatched_init(self, name, source):
 Assignment.__init__ = assignment_monkeypatched_init
 
 def check_file(path):
-    error_count = pyflakes_check(path.read(), str(path))
-    assert not error_count
+    return pyflakes_check(path.read(), str(path))
+

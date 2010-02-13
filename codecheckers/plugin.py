@@ -9,8 +9,14 @@ class PyCodeCheckItem(py.test.collect.Item):
         self._ep = ep
 
     def runtest(self):
+        c = py.io.StdCapture()
         mod = self._ep.load()
-        mod.check_file(self.fspath)
+        found_errors, out, err = c.call(mod.check_file, self.fspath)
+        self.out, self.err = out, err
+        assert not found_errors
+
+    def repr_failure(self, exc_info):
+        return self.out
 
     def reportinfo(self):
         return (self.fspath, -1, "codecheck")
@@ -21,6 +27,7 @@ class PyCheckerCollector(py.test.collect.File):
     def __init__(self, path, parent):
         super(PyCheckerCollector, self).__init__(path, parent)
         self.name += '[code-check]'
+
     def collect(self):
         entrypoints = pkg_resources.iter_entry_points('codechecker')
         return [PyCodeCheckItem(ep, self) for ep in entrypoints]
