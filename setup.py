@@ -9,7 +9,7 @@ setup(
     packages=[
         'codecheckers',
         ],
-    entry_points = {
+    entry_points={
         'pytest11': [
             'codechecker = codecheckers.plugin',
             ],

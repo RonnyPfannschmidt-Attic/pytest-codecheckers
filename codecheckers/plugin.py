@@ -9,11 +9,16 @@ class PyCodeCheckItem(py.test.collect.Item):
         self._ep = ep
 
     def runtest(self):
+        __tracebackhide__ = True
         mod = self._ep.load()
+        mod.check_file(self.fspath)
 
 
 
 class PyCheckerCollector(py.test.collect.File):
+    def __init__(self, path, parent):
+        super(PyCheckerCollector, self).__init__(path, parent)
+        self.name += '[code-check]'
     def collect(self):
         entrypoints = pkg_resources.iter_entry_points('codechecker')
         return [PyCodeCheckItem(ep, self) for ep in entrypoints]
