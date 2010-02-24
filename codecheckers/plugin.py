@@ -11,16 +11,23 @@ class PyCodeCheckItem(py.test.collect.Item):
     def runtest(self):
         c = py.io.StdCapture()
         mod = self._ep.load()
-        found_errors, out, err = c.call(mod.check_file, self.fspath)
-        self.out, self.err = out, err
+        try:
+            found_errors, out, err = c.call(mod.check_file, self.fspath)
+            self.out, self.err = out, err
+        except:
+            found_errors = True
+            self.info = py.code.ExceptionInfo()
         assert not found_errors
 
     def repr_failure(self, exc_info):
-        return self.out
+        try:
+            return self.out
+        except AttributeError:
+            #XXX: internal error ?!
+            return super(PyCodeCheckItem, self).repr_failure(self.info)
 
     def reportinfo(self):
         return (self.fspath, -1, "codecheck %s" % self._ep.name)
-
 
 
 class PyCheckerCollector(py.test.collect.File):

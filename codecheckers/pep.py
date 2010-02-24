@@ -3,7 +3,8 @@ import pep8
 class PyTestChecker(pep8.Checker):
     ignored_errors = 0
     def report_error(self, line_number, offset, text, check):
-        if pep8.ignore_code(text[:4]): #XXX: pep8 is a retarded module!
+        #XXX: pep8 is a retarded module!
+        if pep8.ignore_code(text[:4]):
             self.ignored_errors += 1
         pep8.Checker.report_error(self, line_number, offset, text, check)
 
@@ -16,6 +17,7 @@ def check_file(path):
         'dummy file',
         ])
     checker = PyTestChecker(str(path))
+    #XXX: bails out on death
     error_count = checker.check_all()
     ignored = checker.ignored_errors
     return max(error_count - ignored, 0)
