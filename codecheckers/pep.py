@@ -11,9 +11,10 @@ class PyTestChecker(pep8.Checker):
 def check_file(path):
 
     pep8.process_options(['pep8',
-        #taken from moin
+        # ignore list taken from moin
         '--ignore=E202,E221,E222,E241,E301,E302,E401,E501,E701,W391,W601,W602',
         '--show-source',
+        '--repeat',
         'dummy file',
         ])
     checker = PyTestChecker(str(path))
