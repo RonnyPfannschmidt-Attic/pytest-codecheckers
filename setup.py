@@ -14,12 +14,12 @@ further questions please send them to the `pytest-dev`_ mailing list.
 .. _`pytest-dev`: http://codespeak.net/mailman/listinfo/py-dev
 """
 from setuptools import setup
-
+from hgdistver import get_version
 setup(
     name='pytest-codecheckers',
     description='pytest plugin to add source code sanity checks (pep8 and friends)',
     long_description=__doc__,
-    version='0.2',
+    version=get_version(),
     author='Ronny Pfannschmidt',
     author_email='Ronny.Pfannschmidt@gmx.de',
     url='http://bitbucket.org/RonnyPfannschmidt/pytest-codecheckers/',
