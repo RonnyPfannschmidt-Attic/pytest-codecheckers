@@ -36,11 +36,15 @@ class PyCheckerCollector(py.test.collect.File):
         self.name += '[code-check]'
 
     def collect(self):
+        checkers = py.test.config.getvalue('codecheck')
         entrypoints = pkg_resources.iter_entry_points('codechecker')
-        return [PyCodeCheckItem(ep, self) for ep in entrypoints]
+        return [PyCodeCheckItem(ep, self) for ep in entrypoints if ep.name in checkers]
 
 
 def pytest_collect_file(path, parent):
     if path.ext == '.py':
         return PyCheckerCollector(path, parent)
 
+
+def pytest_addoption(parser):
+    parser.addoption('--codecheck', action='append', default=[])
