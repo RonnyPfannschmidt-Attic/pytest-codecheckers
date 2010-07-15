@@ -1,1 +1,1 @@
-option_codecheck = 'pep8', 'pyflakes'
+option_codecheck = ['pep8', 'pyflakes']
