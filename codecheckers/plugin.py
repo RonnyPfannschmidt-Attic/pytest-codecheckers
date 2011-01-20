@@ -36,8 +36,11 @@ class PyCheckerCollector(py.test.collect.File):
         self.name += '[code-check]'
 
     def collect(self):
-        checkers = py.test.config.getvalue('codecheck')
+        if self.config.option.no_codechecks:
+            return []
+        checkers = self.config.getini('codechecks')
         entrypoints = pkg_resources.iter_entry_points('codechecker')
+        #XXX: list wanted checkers we didnt get
         return [PyCodeCheckItem(ep, self) for ep in entrypoints if ep.name in checkers]
 
 
@@ -47,4 +50,5 @@ def pytest_collect_file(path, parent):
 
 
 def pytest_addoption(parser):
-    parser.addoption('--codecheck', action='append', default=[])
+    parser.addini('codechecks', type='args', help='listings of the codechecks to use')
+    parser.addoption('--no-codechecks', action='store_true')
