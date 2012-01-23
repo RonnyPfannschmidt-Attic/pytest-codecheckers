@@ -40,8 +40,9 @@ class PyCheckerCollector(py.test.collect.File):
             return []
         checkers = self.config.getini('codechecks')
         entrypoints = pkg_resources.iter_entry_points('codechecker')
-        #XXX: list wanted checkers we didnt get
-        return [PyCodeCheckItem(ep, self) for ep in entrypoints if ep.name in checkers]
+
+        items = [PyCodeCheckItem(ep, self) for ep in entrypoints if ep.name in checkers]
+        return items
 
 
 def pytest_collect_file(path, parent):
