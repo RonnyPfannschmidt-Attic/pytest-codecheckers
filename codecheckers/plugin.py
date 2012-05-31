@@ -9,11 +9,13 @@ class PyCodeCheckItem(py.test.collect.Item):
         self._ep = ep
 
     def runtest(self):
-        c = py.io.StdCapture()
+        io = py.io.BytesIO()
         mod = self._ep.load()
         try:
-            found_errors, out, err = c.call(mod.check_file, self.fspath)
-            self.out, self.err = out, err
+            main = py.path.local()
+            filename = main.bestrelpath(self.fspath)
+            found_errors = mod.check_file(self.fspath, filename, io)
+            self.out = io.getvalue()
         except:
             found_errors = True
             self.info = py.code.ExceptionInfo()

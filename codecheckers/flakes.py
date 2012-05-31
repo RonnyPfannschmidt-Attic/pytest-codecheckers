@@ -9,6 +9,6 @@ def assignment_monkeypatched_init(self, name, source):
 
 Assignment.__init__ = assignment_monkeypatched_init
 
-def check_file(path):
-    return pyflakes_check(path.read(), str(path))
+def check_file(path, filename, io):
+    return pyflakes_check(path.read(), filename, io)
 
