@@ -19,7 +19,7 @@ setup(
     name='pytest-codecheckers',
     description='pytest plugin to add source code sanity checks (pep8 and friends)',
     long_description=__doc__,
-    version=get_version(),
+    get_version_from_scm=True,
     author='Ronny Pfannschmidt',
     author_email='Ronny.Pfannschmidt@gmx.de',
     url='http://bitbucket.org/RonnyPfannschmidt/pytest-codecheckers/',
@@ -40,4 +40,5 @@ setup(
         'pyflakes>=0.4',
         'pep8',
         ],
+    setup_requires=['hgdistver'],
     )
