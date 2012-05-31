@@ -6,15 +6,16 @@ import pkg_resources
 class PyCodeCheckItem(py.test.collect.Item):
     def __init__(self, ep, parent):
         py.test.collect.Item.__init__(self, ep.name, parent)
+        main = py.path.local()
+        self.filename = main.bestrelpath(self.fspath)
         self._ep = ep
 
     def runtest(self):
-        io = py.io.BytesIO()
         mod = self._ep.load()
+        io = py.io.BytesIO()
+
         try:
-            main = py.path.local()
-            filename = main.bestrelpath(self.fspath)
-            found_errors = mod.check_file(self.fspath, filename, io)
+            found_errors = mod.check_file(self.fspath, self.filename, io)
             self.out = io.getvalue()
         except:
             found_errors = True
@@ -26,10 +27,13 @@ class PyCodeCheckItem(py.test.collect.Item):
             return self.out
         except AttributeError:
             #XXX: internal error ?!
-            return super(PyCodeCheckItem, self).repr_failure(self.info)
+            self.info = py.code.ExceptionInfo()
+            info = getattr(self, 'info', exc_info)
+            return super(PyCodeCheckItem, self).repr_failure(info)
 
     def reportinfo(self):
-        return (self.fspath, -1, "codecheck %s" % self._ep.name)
+        return (self.fspath, -1, "codecheck %s %s" % (
+            self._ep.name, self.filename))
 
 
 class PyCheckerCollector(py.test.collect.File):
