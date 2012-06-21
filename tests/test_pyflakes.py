@@ -16,7 +16,7 @@ def test_pyflakes_finds_name_error(testdir):
     out.stdout.fnmatch_lines([
         '*abc*',
         '*1 failed*',
-        ])
+    ])
 
 
 def test_reportinfo_verbose(testdir):
@@ -27,4 +27,4 @@ def test_reportinfo_verbose(testdir):
     out = testdir.runpytest('-v')
     out.stdout.fnmatch_lines([
         '*test_reportinfo_verbose.py:0: codecheck pyflakes PASSED',
-        ])
+    ])

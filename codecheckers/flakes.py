@@ -2,6 +2,7 @@ from pyflakes.scripts.pyflakes import check as pyflakes_check
 
 from pyflakes.checker import Binding, Assignment
 
+
 def assignment_monkeypatched_init(self, name, source):
     Binding.__init__(self, name, source)
     if name == '__tracebackhide__':
@@ -9,6 +10,6 @@ def assignment_monkeypatched_init(self, name, source):
 
 Assignment.__init__ = assignment_monkeypatched_init
 
-def check_file(path, filename, io):
-    return pyflakes_check(path.read(), filename, io)
 
+def check_file(path, filename):
+    return pyflakes_check(path.read(), filename)

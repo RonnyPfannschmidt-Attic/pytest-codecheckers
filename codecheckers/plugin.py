@@ -3,6 +3,13 @@ import py
 import pkg_resources
 
 
+class FoundErrors(Exception):
+    def __init__(self, count, out, err):
+        self.count = count
+        self.out = out
+        self.err = err
+
+
 class PyCodeCheckItem(py.test.collect.Item):
     def __init__(self, ep, parent):
         py.test.collect.Item.__init__(self, ep.name, parent)
@@ -11,29 +18,20 @@ class PyCodeCheckItem(py.test.collect.Item):
         self._ep = ep
 
     def runtest(self):
-        mod = self._ep.load()
-        io = py.io.BytesIO()
+        check = self._ep.load().check_file
+        call = py.io.StdCapture.call
 
-        try:
-            found_errors = mod.check_file(self.fspath, self.filename, io)
-            self.out = io.getvalue()
-        except:
-            found_errors = True
-            self.info = py.code.ExceptionInfo()
-        assert not found_errors
+        found_errors, out, err = call(check, self.fspath, self.filename)
+        if found_errors:
+            raise FoundErrors(FoundErrors, out, err)
 
-    def repr_failure(self, exc_info):
-        try:
-            return self.out
-        except AttributeError:
-            #XXX: internal error ?!
-            self.info = py.code.ExceptionInfo()
-            info = getattr(self, 'info', exc_info)
-            return super(PyCodeCheckItem, self).repr_failure(info)
+    def repr_failure(self, excinfo):
+        if excinfo.errisinstance(FoundErrors):
+            return excinfo.value.out
+        return super(PyCodeCheckItem, self).repr_failure(excinfo)
 
     def reportinfo(self):
-        return (self.fspath, -1, "codecheck %s %s" % (
-            self._ep.name, self.filename))
+        return (self.fspath, -1, "codecheck " + self._ep.name)
 
 
 class PyCheckerCollector(py.test.collect.File):
@@ -46,9 +44,8 @@ class PyCheckerCollector(py.test.collect.File):
             return []
         checkers = self.config.getini('codechecks')
         entrypoints = pkg_resources.iter_entry_points('codechecker')
-
-        items = [PyCodeCheckItem(ep, self) for ep in entrypoints if ep.name in checkers]
-        return items
+        wanted = (ep for ep in entrypoints if ep.name in checkers)
+        return [PyCodeCheckItem(wep, self) for wep in wanted]
 
 
 def pytest_collect_file(path, parent):
@@ -57,5 +54,7 @@ def pytest_collect_file(path, parent):
 
 
 def pytest_addoption(parser):
-    parser.addini('codechecks', type='args', help='listings of the codechecks to use')
+    parser.addini('codechecks', type='args',
+                  help='listings of the codechecks to use',
+                  default=['pep8', 'pyflakes'])
     parser.addoption('--no-codechecks', action='store_true')
