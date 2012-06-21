@@ -11,8 +11,7 @@ def test_pyflakes_finds_name_error(testdir):
         def b():
             abc
         ''')
-    #XXX: bad hack cause i fail to disable the pep8 checker
-    out = testdir.runpytest('--tb=short', '-k', 'flakes', '-v')
+    out = testdir.runpytest('--tb=short', '-v')
     out.stdout.fnmatch_lines([
         '*abc*',
         '*1 failed*',
