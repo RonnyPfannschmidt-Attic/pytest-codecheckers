@@ -56,5 +56,5 @@ def pytest_collect_file(path, parent):
 def pytest_addoption(parser):
     parser.addini('codechecks', type='args',
                   help='listings of the codechecks to use',
-                  default=['pep8', 'pyflakes'])
+                  default=[])
     parser.addoption('--no-codechecks', action='store_true')
