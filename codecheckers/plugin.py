@@ -31,7 +31,8 @@ class PyCodeCheckItem(py.test.collect.Item):
         return super(PyCodeCheckItem, self).repr_failure(excinfo)
 
     def reportinfo(self):
-        return (self.fspath, -1, "codecheck " + self._ep.name)
+        info = "%s: %s codecheck" % (self.filename, self._ep.name)
+        return self.fspath, None, info
 
 
 class PyCheckerCollector(py.test.collect.File):
