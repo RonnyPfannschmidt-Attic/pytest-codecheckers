@@ -22,7 +22,7 @@ setup(
     get_version_from_scm=True,
     author='Ronny Pfannschmidt',
     author_email='Ronny.Pfannschmidt@gmx.de',
-    url='http://bitbucket.org/RonnyPfannschmidt/pytest-codecheckers/',
+    url='https://github.com/RonnyPfannschmidt-Attic/pytest-codecheckers',
     packages=[
         'codecheckers',
     ],
