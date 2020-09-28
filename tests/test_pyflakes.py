@@ -1,4 +1,8 @@
-def pytest_funcarg__testdir(request):
+import pytest
+
+
+@pytest.fixture
+def testdir(request):
     testdir = request.getfuncargvalue('testdir')
     testdir.makeini('[pytest]\ncodechecks = pyflakes')
     return testdir
@@ -25,5 +29,5 @@ def test_reportinfo_verbose(testdir):
         ''')
     out = testdir.runpytest('-v')
     out.stdout.fnmatch_lines([
-        '*test_reportinfo_verbose.py:0: codecheck pyflakes PASSED',
+        'test_reportinfo_verbose.py::pyflakes PASSED*'
     ])
