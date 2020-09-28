@@ -36,7 +36,7 @@ setup(
         ],
     },
     install_requires=[
-        'pytest>=2.0',
+        'pytest>=2,<4',
         'pyflakes>=0.4',
         'pep8',
     ],
