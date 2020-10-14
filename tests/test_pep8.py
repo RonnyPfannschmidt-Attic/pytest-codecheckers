@@ -1,4 +1,8 @@
-def pytest_funcarg__testdir(request):
+import pytest
+
+
+@pytest.fixture
+def testdir(request):
     testdir = request.getfuncargvalue('testdir')
     testdir.makeini('[pytest]\ncodechecks = pep8')
     return testdir

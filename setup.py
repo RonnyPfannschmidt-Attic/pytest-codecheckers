@@ -36,9 +36,16 @@ setup(
         ],
     },
     install_requires=[
-        'pytest>=2.0',
+        'pytest>=2,<4',
         'pyflakes>=0.4',
         'pep8',
     ],
     setup_requires=['hgdistver'],
+    classifiers=[
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Framework :: Pytest',
+        'Development Status :: 7 - Inactive',
+    ],
 )
